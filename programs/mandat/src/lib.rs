@@ -4,6 +4,8 @@ declare_id!("2nJTE7vKVaV3pum9jV9NTYP3MPMqAx2GojqxFQn9W2kz");
 
 pub const SECONDS_PER_DAY: i64 = 86_400;
 pub const MAX_ALLOWED_DESTINATIONS: usize = 16;
+/// Upper bound on how long a delegated session key may live.
+pub const MAX_SESSION_DURATION: i64 = 30 * SECONDS_PER_DAY;
 
 #[program]
 pub mod mandat {
@@ -71,7 +73,15 @@ pub mod mandat {
     /// Replace the vault policy. Owner only.
     pub fn update_policy(ctx: Context<OwnerOnly>, args: PolicyArgs) -> Result<()> {
         args.validate()?;
-        ctx.accounts.vault.policy = Policy::from_args(&args);
+        let vault = &mut ctx.accounts.vault;
+        // Preserve the running daily spend counter: replacing the policy
+        // mid-day must not hand the agent a fresh daily allowance.
+        let spent_today = vault.policy.spent_today;
+        let last_day = vault.policy.last_day;
+        let mut policy = Policy::from_args(&args);
+        policy.spent_today = spent_today;
+        policy.last_day = last_day;
+        vault.policy = policy;
         emit!(PolicyUpdated {
             vault: ctx.accounts.vault.key(),
         });
@@ -88,7 +98,15 @@ pub mod mandat {
     ) -> Result<()> {
         let now = Clock::get()?.unix_timestamp;
         require!(expires_at > now, MandatError::SessionExpiryInPast);
+        require!(
+            expires_at
+                <= now
+                    .checked_add(MAX_SESSION_DURATION)
+                    .ok_or(MandatError::Overflow)?,
+            MandatError::InvalidSession
+        );
         require!(per_tx_limit > 0 && daily_limit > 0, MandatError::ZeroLimit);
+        require!(per_tx_limit <= daily_limit, MandatError::InvalidSession);
 
         let session = &mut ctx.accounts.session;
         session.vault = ctx.accounts.vault.key();
@@ -114,6 +132,17 @@ pub mod mandat {
     pub fn revoke_session(ctx: Context<RevokeSession>) -> Result<()> {
         ctx.accounts.session.revoked = true;
         emit!(SessionRevoked {
+            vault: ctx.accounts.vault.key(),
+            session: ctx.accounts.session.key(),
+        });
+        Ok(())
+    }
+
+    /// Close a session account and return its rent to the owner. Owner only;
+    /// works whether or not the session was revoked. A new session for the
+    /// same signer can be created afterwards.
+    pub fn close_session(ctx: Context<CloseSession>) -> Result<()> {
+        emit!(SessionClosed {
             vault: ctx.accounts.vault.key(),
             session: ctx.accounts.session.key(),
         });
@@ -161,11 +190,12 @@ pub mod mandat {
 
         // 5. Daily limits with day rollover.
         let day = now / SECONDS_PER_DAY;
-        if day != vault.policy.last_day {
+        // `>` (not `!=`): a clock that moves backwards must not reset counters.
+        if day > vault.policy.last_day {
             vault.policy.last_day = day;
             vault.policy.spent_today = 0;
         }
-        if day != session.last_day {
+        if day > session.last_day {
             session.last_day = day;
             session.spent_today = 0;
         }
@@ -202,7 +232,10 @@ pub mod mandat {
             session: session.key(),
             destination: ctx.accounts.destination.key(),
             amount,
-            remaining_daily: vault.policy.daily_limit - vault.policy.spent_today,
+            remaining_daily: vault
+                .policy
+                .daily_limit
+                .saturating_sub(vault.policy.spent_today),
         });
         Ok(())
     }
@@ -419,6 +452,26 @@ pub struct RevokeSession<'info> {
 }
 
 #[derive(Accounts)]
+pub struct CloseSession<'info> {
+    #[account(mut)]
+    pub owner: Signer<'info>,
+    #[account(
+        seeds = [b"vault", owner.key().as_ref()],
+        bump = vault.bump,
+        has_one = owner @ MandatError::Unauthorized
+    )]
+    pub vault: Account<'info, Vault>,
+    #[account(
+        mut,
+        seeds = [b"session", vault.key().as_ref(), session.signer.as_ref()],
+        bump = session.bump,
+        has_one = vault @ MandatError::Unauthorized,
+        close = owner
+    )]
+    pub session: Account<'info, Session>,
+}
+
+#[derive(Accounts)]
 pub struct ExecuteTransfer<'info> {
     /// The ephemeral agent key. Must match the registered session signer.
     pub session_signer: Signer<'info>,
@@ -493,6 +546,12 @@ pub struct SessionRevoked {
 }
 
 #[event]
+pub struct SessionClosed {
+    pub vault: Pubkey,
+    pub session: Pubkey,
+}
+
+#[event]
 pub struct TransferExecuted {
     pub vault: Pubkey,
     pub session: Pubkey,
@@ -529,4 +588,6 @@ pub enum MandatError {
     Unauthorized,
     #[msg("Arithmetic overflow")]
     Overflow,
+    #[msg("Invalid session parameters")]
+    InvalidSession,
 }

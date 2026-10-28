@@ -83,7 +83,13 @@ describe(DEMO ? "Mandat — Live Demo" : "mandat", () => {
     if (DEMO) {
       console.log("      Policy: max 0.5 SOL/tx, max 1 SOL/hari");
     }
-    await program.methods.initializeVault(policy).rpc();
+    // Other suites in tests/ share this owner's vault PDA; reuse it if present.
+    if (await provider.connection.getAccountInfo(vaultPda)) {
+      await program.methods.updatePolicy(policy).rpc();
+      await program.methods.setFrozen(false).rpc();
+    } else {
+      await program.methods.initializeVault(policy).rpc();
+    }
     const vault = await program.account.vault.fetch(vaultPda);
     assert.ok(vault.owner.equals(owner));
     assert.isFalse(vault.frozen);
