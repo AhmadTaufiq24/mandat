@@ -1,0 +1,204 @@
+=== Mandat Demo Recording ===
+Started: Thu Jun 11 19:44:33 WIB 2026
+
+warning: unexpected `cfg` condition value: `custom-heap`
+ --> programs/mandat/src/lib.rs:8:1
+  |
+8 | #[program]
+  | ^^^^^^^^^^
+  |
+  = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+  = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+  = help: try referring to `$crate::custom_heap_default` crate for guidance on how handle this unexpected cfg
+  = help: the macro `$crate::custom_heap_default` may come from an old version of the `solana_program_entrypoint` crate, try updating your dependency with `cargo update -p solana_program_entrypoint`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+  = note: `#[warn(unexpected_cfgs)]` on by default
+  = note: this warning originates in the macro `$crate::custom_heap_default` which comes from the expansion of the attribute macro `program` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `custom-panic`
+ --> programs/mandat/src/lib.rs:8:1
+  |
+8 | #[program]
+  | ^^^^^^^^^^
+  |
+  = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+  = note: using a cfg inside a macro will use the cfgs from the destination crate and not the ones from the defining crate
+  = help: try referring to `$crate::custom_panic_default` crate for guidance on how handle this unexpected cfg
+  = help: the macro `$crate::custom_panic_default` may come from an old version of the `solana_program_entrypoint` crate, try updating your dependency with `cargo update -p solana_program_entrypoint`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+  = note: this warning originates in the macro `$crate::custom_panic_default` which comes from the expansion of the attribute macro `program` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+ --> programs/mandat/src/lib.rs:8:1
+  |
+8 | #[program]
+  | ^^^^^^^^^^
+  |
+  = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+  = note: using a cfg inside a attribute macro will use the cfgs from the destination crate and not the ones from the defining crate
+  = help: try referring to `program` crate for guidance on how handle this unexpected cfg
+  = help: the attribute macro `program` may come from an old version of the `anchor_attribute_program` crate, try updating your dependency with `cargo update -p anchor_attribute_program`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+  = note: this warning originates in the attribute macro `program` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+   --> programs/mandat/src/lib.rs:326:10
+    |
+326 | #[derive(Accounts)]
+    |          ^^^^^^^^
+    |
+    = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+    = note: using a cfg inside a derive macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `Accounts` crate for guidance on how handle this unexpected cfg
+    = help: the derive macro `Accounts` may come from an old version of the `anchor_derive_accounts` crate, try updating your dependency with `cargo update -p anchor_derive_accounts`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the derive macro `Accounts` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+   --> programs/mandat/src/lib.rs:341:10
+    |
+341 | #[derive(Accounts)]
+    |          ^^^^^^^^
+    |
+    = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+    = note: using a cfg inside a derive macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `Accounts` crate for guidance on how handle this unexpected cfg
+    = help: the derive macro `Accounts` may come from an old version of the `anchor_derive_accounts` crate, try updating your dependency with `cargo update -p anchor_derive_accounts`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the derive macro `Accounts` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+   --> programs/mandat/src/lib.rs:355:10
+    |
+355 | #[derive(Accounts)]
+    |          ^^^^^^^^
+    |
+    = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+    = note: using a cfg inside a derive macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `Accounts` crate for guidance on how handle this unexpected cfg
+    = help: the derive macro `Accounts` may come from an old version of the `anchor_derive_accounts` crate, try updating your dependency with `cargo update -p anchor_derive_accounts`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the derive macro `Accounts` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+   --> programs/mandat/src/lib.rs:370:10
+    |
+370 | #[derive(Accounts)]
+    |          ^^^^^^^^
+    |
+    = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+    = note: using a cfg inside a derive macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `Accounts` crate for guidance on how handle this unexpected cfg
+    = help: the derive macro `Accounts` may come from an old version of the `anchor_derive_accounts` crate, try updating your dependency with `cargo update -p anchor_derive_accounts`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the derive macro `Accounts` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+   --> programs/mandat/src/lib.rs:382:10
+    |
+382 | #[derive(Accounts)]
+    |          ^^^^^^^^
+    |
+    = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+    = note: using a cfg inside a derive macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `Accounts` crate for guidance on how handle this unexpected cfg
+    = help: the derive macro `Accounts` may come from an old version of the `anchor_derive_accounts` crate, try updating your dependency with `cargo update -p anchor_derive_accounts`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the derive macro `Accounts` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+   --> programs/mandat/src/lib.rs:404:10
+    |
+404 | #[derive(Accounts)]
+    |          ^^^^^^^^
+    |
+    = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+    = note: using a cfg inside a derive macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `Accounts` crate for guidance on how handle this unexpected cfg
+    = help: the derive macro `Accounts` may come from an old version of the `anchor_derive_accounts` crate, try updating your dependency with `cargo update -p anchor_derive_accounts`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the derive macro `Accounts` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+   --> programs/mandat/src/lib.rs:421:10
+    |
+421 | #[derive(Accounts)]
+    |          ^^^^^^^^
+    |
+    = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+    = note: using a cfg inside a derive macro will use the cfgs from the destination crate and not the ones from the defining crate
+    = help: try referring to `Accounts` crate for guidance on how handle this unexpected cfg
+    = help: the derive macro `Accounts` may come from an old version of the `anchor_derive_accounts` crate, try updating your dependency with `cargo update -p anchor_derive_accounts`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: this warning originates in the derive macro `Accounts` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: `mandat` (lib) generated 10 warnings
+    Finished `release` profile [optimized] target(s) in 0.15s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.16s
+     Running unittests src/lib.rs (/Users/ahmadtaufiq/Developer/mandat/target/debug/deps/mandat-3e8e91321f31341d)
+
+Found a 'test' script in the Anchor.toml. Running it as a test suite!
+
+Running test suite: "/Users/ahmadtaufiq/Developer/mandat/Anchor.toml"
+
+(node:8593) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/ahmadtaufiq/Developer/mandat/tests/demo.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/ahmadtaufiq/Developer/mandat/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+  Mandat — Live Demo
+
+  MANDAT — Custody & Policy Layer for AI Agents on Solana
+  Beri agent Anda mandat, bukan kunci.
+
+  Program : 2nJTE7vKVaV3pum9jV9NTYP3MPMqAx2GojqxFQn9W2kz
+  Owner   : 5KG3qVszVzMwV3KZ9E7BHXfMbDFaA3vpYS1tnaL2uMLT
+  Agent   : 8GqkTGC5pHG2p9KMf2Q8buTKPTbG7pZ1jhUr17hUvQo9 (session key)
+
+[1/7] Owner membuat vault + policy on-chain
+      Policy: max 0.5 SOL/tx, max 1 SOL/hari
+      OK  Vault PDA: Djwj4JiqAEU74nUAqoaw...
+    ✔ initializes a vault with a policy (1079ms)
+
+[2/7] Owner deposit 2 SOL ke vault
+      OK  Saldo vault: 2.0050 SOL
+    ✔ accepts deposits (976ms)
+
+[3/7] Owner delegasikan session key ke AI agent
+      OK  Agent punya session key terbatas — bukan private key owner
+    ✔ creates an agent session (969ms)
+
+[4/7] Agent transfer 0.1 SOL (dalam batas mandat)
+      OK  Transfer berhasil — policy check passed on-chain
+    ✔ lets the agent transfer within policy (971ms)
+
+────────────────────────────────────────────────────────────
+  KLIMaks DEMO — Policy ditegakkan on-chain
+────────────────────────────────────────────────────────────
+
+[5/7] Agent mencoba transfer 5 SOL (melebihi limit 0.5 SOL/tx)
+      BLOCKED  PerTxLimitExceeded — transaksi ditolak oleh program Mandat
+    ✔ denies a transfer over the per-tx limit (1512ms)
+
+[6/7] Owner aktifkan kill switch
+      OK  Vault dibekukan
+      Agent mencoba transfer 0.01 SOL...
+      BLOCKED  VaultFrozen — semua aktivitas agent dihentikan
+    ✔ kill switch freezes the vault (1399ms)
+
+[7/7] Owner withdraw 1 SOL (tanpa batas policy agent)
+      OK  Owner tetap punya kontrol penuh atas dana
+    ✔ owner can withdraw without policy limits (970ms)
+
+════════════════════════════════════════════════════════════
+  Demo selesai — 7/7 skenario lulus
+  Mandat: beri agent Anda mandat, bukan kunci.
+════════════════════════════════════════════════════════════
+
+
+
+  7 passing (9s)
+
+
+Finished: Thu Jun 11 19:44:46 WIB 2026

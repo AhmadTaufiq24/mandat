@@ -1,0 +1,29 @@
+{
+  "name": "mandat",
+  "version": "0.1.0",
+  "description": "Custody & policy layer for AI agents on Solana",
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check",
+    "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" --write",
+    "test": "anchor test --validator legacy",
+    "demo": "bash scripts/run-demo.sh",
+    "demo:record": "bash scripts/record-demo.sh",
+    "devnet:fund": "bash scripts/fund-devnet.sh",
+    "devnet:deploy": "bash scripts/deploy-devnet.sh",
+    "devnet:demo": "bash scripts/run-devnet-demo.sh"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.32.1"
+  },
+  "devDependencies": {
+    "@types/bn.js": "^5.1.0",
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^10.0.0",
+    "chai": "^4.3.4",
+    "mocha": "^10.0.0",
+    "prettier": "^3.0.0",
+    "ts-mocha": "^10.0.0",
+    "typescript": "^5.0.0"
+  }
+}

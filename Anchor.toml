@@ -1,0 +1,22 @@
+[toolchain]
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+mandat = "2nJTE7vKVaV3pum9jV9NTYP3MPMqAx2GojqxFQn9W2kz"
+
+[programs.devnet]
+mandat = "2nJTE7vKVaV3pum9jV9NTYP3MPMqAx2GojqxFQn9W2kz"
+
+[provider]
+cluster = "devnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "npx ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+demo = "npx ts-mocha -p ./tsconfig.json -t 1000000 tests/demo.ts"
+demo-devnet = "npx ts-mocha -p ./tsconfig.json -t 1000000 tests/demo-devnet.ts"
+
+[hooks]
