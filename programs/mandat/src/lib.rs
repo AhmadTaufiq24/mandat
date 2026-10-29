@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token_interface::{
-    self, Mint, TokenAccount, TokenInterface, TransferChecked,
-};
+// Classic SPL Token only: Token-2022 (transfer hooks, fees, permanent
+// delegate, ...) is deliberately not supported on the agent path.
+use anchor_spl::token::{self, Mint, Token, TokenAccount, TransferChecked};
 
 declare_id!("2nJTE7vKVaV3pum9jV9NTYP3MPMqAx2GojqxFQn9W2kz");
 
@@ -295,7 +295,7 @@ pub mod mandat {
         let bump = vault.bump;
 
         let signer_seeds: &[&[&[u8]]] = &[&[b"vault", owner_key.as_ref(), &[bump]]];
-        token_interface::transfer_checked(
+        token::transfer_checked(
             CpiContext::new_with_signer(
                 ctx.accounts.token_program.key(),
                 TransferChecked {
@@ -328,7 +328,7 @@ pub mod mandat {
         let owner_key = ctx.accounts.owner.key();
         let bump = ctx.accounts.vault.bump;
         let signer_seeds: &[&[&[u8]]] = &[&[b"vault", owner_key.as_ref(), &[bump]]];
-        token_interface::transfer_checked(
+        token::transfer_checked(
             CpiContext::new_with_signer(
                 ctx.accounts.token_program.key(),
                 TransferChecked {
@@ -767,8 +767,8 @@ pub struct ConfigureTokenPolicy<'info> {
         has_one = owner @ MandatError::Unauthorized
     )]
     pub vault: Account<'info, Vault>,
-    /// Must be a real mint owned by SPL Token or Token-2022.
-    pub mint: InterfaceAccount<'info, Mint>,
+    /// Must be a classic SPL Token mint (owner checked by Anchor).
+    pub mint: Account<'info, Mint>,
 }
 
 #[derive(Accounts)]
@@ -815,7 +815,7 @@ pub struct ExecuteTokenTransfer<'info> {
         constraint = mint.key() == vault.token_policy.mint @ MandatError::MintNotAllowed,
         mint::token_program = token_program
     )]
-    pub mint: InterfaceAccount<'info, Mint>,
+    pub mint: Account<'info, Mint>,
     /// Vault-owned token account (normally the vault PDA's ATA).
     #[account(
         mut,
@@ -823,7 +823,7 @@ pub struct ExecuteTokenTransfer<'info> {
         token::authority = vault,
         token::token_program = token_program
     )]
-    pub source: InterfaceAccount<'info, TokenAccount>,
+    pub source: Account<'info, TokenAccount>,
     /// Recipient token account; its `owner` is what the whitelist checks.
     #[account(
         mut,
@@ -831,9 +831,9 @@ pub struct ExecuteTokenTransfer<'info> {
         token::token_program = token_program,
         constraint = destination.key() != source.key() @ MandatError::DestinationNotAllowed
     )]
-    pub destination: InterfaceAccount<'info, TokenAccount>,
-    /// SPL Token or Token-2022 only (program ID checked by Anchor).
-    pub token_program: Interface<'info, TokenInterface>,
+    pub destination: Account<'info, TokenAccount>,
+    /// Classic SPL Token program only (program ID checked by Anchor).
+    pub token_program: Program<'info, Token>,
 }
 
 #[derive(Accounts)]
@@ -846,21 +846,21 @@ pub struct WithdrawToken<'info> {
     )]
     pub vault: Account<'info, Vault>,
     #[account(mint::token_program = token_program)]
-    pub mint: InterfaceAccount<'info, Mint>,
+    pub mint: Account<'info, Mint>,
     #[account(
         mut,
         token::mint = mint,
         token::authority = vault,
         token::token_program = token_program
     )]
-    pub source: InterfaceAccount<'info, TokenAccount>,
+    pub source: Account<'info, TokenAccount>,
     #[account(
         mut,
         token::mint = mint,
         token::token_program = token_program
     )]
-    pub destination: InterfaceAccount<'info, TokenAccount>,
-    pub token_program: Interface<'info, TokenInterface>,
+    pub destination: Account<'info, TokenAccount>,
+    pub token_program: Program<'info, Token>,
 }
 
 // ---------------------------------------------------------------------------
